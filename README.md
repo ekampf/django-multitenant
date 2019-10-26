@@ -46,16 +46,22 @@ In order to use this library you can either use Mixins or have your models inher
    models.ForeignKey
 1. A sample model implementing the above 2 steps:
   ```python
+    class Store(Model):
+      @property
+      def tenant_value(self):
+        return self.id
+    
     class Product(TenantModel):
       store = models.ForeignKey(Store)
-      tenant_id='store_id'
+      tenant_field='store_id'
       name = models.CharField(max_length=255)
       description = models.TextField()
       class Meta(object):
         unique_together = ["id", "store"]
+        
     class Purchase(TenantModel):
       store = models.ForeignKey(Store)
-      tenant_id='store_id'
+      tenant_field='store_id'
       product_purchased = TenantForeignKey(Product)
   ```
 
